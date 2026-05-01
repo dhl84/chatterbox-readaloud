@@ -1,0 +1,31 @@
+[project]
+name = "chatterbox-readaloud"
+version = "0.2.0"
+description = "Local read-aloud pipeline: URL or clipboard -> Ollama cleanup -> Chatterbox TTS via MLX-Audio."
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    # Core pipeline
+    "mlx-audio[tts]>=0.4.3",
+    "requests>=2.33.0",
+    "beautifulsoup4>=4.14.0",
+    "openai>=2.0.0",
+    # MLX-Audio server runtime (NOT pulled by mlx-audio[tts])
+    "uvicorn>=0.46.0",
+    "fastapi>=0.136.0",
+    "python-multipart>=0.0.27",
+    "webrtcvad>=2.0.10",
+    # webrtcvad imports pkg_resources, dropped from setuptools 81+
+    "setuptools<81",
+    # Menu bar app
+    "rumps>=0.4.0",
+]
+
+[project.scripts]
+readaloud = "readaloud.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["readaloud"]

@@ -1,0 +1,9 @@
+#!/bin/bash
+# Wrapper for the readaloud package — handles venv activation so Shortcuts/launchd can call it.
+# Usage: readaloud <subcommand> [args...]
+#   readaloud url <URL>
+#   readaloud clip [--raw|--clean]
+#   readaloud stop
+set -eu
+HERE="$(cd "$(dirname "$0")/.." && pwd)"
+exec "$HERE/.venv/bin/python" -m readaloud "$@"

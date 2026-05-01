@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.python-version
+
+# uv / virtualenvs
+.venv/
+.uv-cache/
+
+# Generated audio
+*.wav
+*.mp3
+audio_*.wav
+
+# Generated launch agents (rendered from .tmpl files at install time)
+launchagents/*.plist
+
+# Logs
+*.log
+
+# macOS
+.DS_Store
+
+# Editor
+.idea/
+.vscode/
+*.swp
