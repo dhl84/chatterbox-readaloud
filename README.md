@@ -95,7 +95,7 @@ To remove the LaunchAgents (leaves the venv, models, and brew packages alone):
 
 ## Wire the global hotkeys (manual, ~5 minutes)
 
-Apple has no clean CLI to create Shortcuts, so this is one-time UI work. Create three shortcuts:
+Apple has no clean CLI to create Shortcuts, so this is one-time UI work. Create three shortcuts, replacing `$HOME/chatterbox` with your checkout's absolute path (Shortcuts does not expand `~` or shell variables):
 
 ### 1. "Read URL"
 
@@ -103,7 +103,7 @@ Apple has no clean CLI to create Shortcuts, so this is one-time UI work. Create 
 2. Add **Ask for Input**. Prompt: `URL to read aloud`. Input Type: `Text`.
 3. Add **Run Shell Script**. Shell: `/bin/bash`. Pass Input: `as arguments`. Script:
    ```bash
-   /Users/davidlee/_code/chatterbox/bin/readaloud url "$1" >/tmp/readaloud.log 2>&1 &
+   $HOME/chatterbox/bin/readaloud url "$1" >/tmp/readaloud.log 2>&1 &
    ```
 4. Click the **(i) info icon** → **Add Keyboard Shortcut** → press your chord (suggestion: **⌥⇧R**).
 
@@ -112,7 +112,7 @@ Apple has no clean CLI to create Shortcuts, so this is one-time UI work. Create 
 1. New shortcut, name `Read Clipboard`.
 2. Add a single **Run Shell Script**:
    ```bash
-   /Users/davidlee/_code/chatterbox/bin/readaloud clip >/tmp/readaloud.log 2>&1 &
+   $HOME/chatterbox/bin/readaloud clip >/tmp/readaloud.log 2>&1 &
    ```
 3. Bind to e.g. **⌥⇧C** (Control+Option+C).
 
@@ -121,7 +121,7 @@ Apple has no clean CLI to create Shortcuts, so this is one-time UI work. Create 
 1. New shortcut, name `Stop Reading`.
 2. **Run Shell Script**:
    ```bash
-   /Users/davidlee/_code/chatterbox/bin/readaloud stop
+   $HOME/chatterbox/bin/readaloud stop
    ```
 3. Bind to e.g. **⌥⇧S**.
 
@@ -229,7 +229,7 @@ curl -s http://127.0.0.1:11434/      # Ollama health
 
 **Long articles feel cut off.** Cleanup truncates raw HTML to 20k chars before the LLM, and Chatterbox itself degrades past ~1000 words per call. The 200–400-word cleanup target keeps you under both. For raw text bypass, `sanitize()` truncates at 8000 chars with a "(truncated)" suffix to prevent runaway TTS jobs.
 
-**First synthesis after a reboot takes ~10 s longer.** The MLX server lazy-loads Chatterbox on the first request — expected.
+**First synthesis after a reboot takes ~10 s longer.** The MLX server lazy-loads Chatterbox on the first request — expected. Similarly, the first cleanup after Ollama has been idle adds ~30 s while `gemma4:latest` cold-loads.
 
 **Playback won't stop with `readaloud stop`.** Stop targets the PID in `/tmp/readaloud.pid`. If you started `afplay` outside this pipeline, use `killall afplay`.
 
@@ -263,7 +263,6 @@ curl -s http://127.0.0.1:11434/      # Ollama health
 ├── scripts/
 │   ├── install.sh
 │   └── uninstall.sh
-├── chatterbox-setup.md              # original design notes
 └── clipboard-readaloud-sprint.md    # clipboard-mode sprint plan (shipped — see header)
 ```
 
