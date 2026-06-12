@@ -4,7 +4,7 @@ import re
 import requests
 
 OLLAMA_URL = "http://localhost:11434/api/generate"
-OLLAMA_MODEL = "qwen2.5:14b"
+OLLAMA_MODEL = "gemma4:latest"
 
 CLEAN_PROMPT = """You will be given the raw text of a web page or document.
 Rewrite it as a short spoken summary suitable for text-to-speech. Rules:

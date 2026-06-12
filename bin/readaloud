@@ -6,4 +6,8 @@
 #   readaloud stop
 set -eu
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
+# Run from the project root so `python -m readaloud` always resolves to this
+# checkout's package — the caller's cwd must never shadow it (e.g. a stray
+# readaloud.py elsewhere would otherwise win via sys.path[0]).
+cd "$HERE"
 exec "$HERE/.venv/bin/python" -m readaloud "$@"

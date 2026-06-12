@@ -26,3 +26,6 @@ launchagents/*.plist
 .idea/
 .vscode/
 *.swp
+
+# Claude Code local config
+.claude/

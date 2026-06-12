@@ -56,11 +56,11 @@ if ! lsof -ti:11434 >/dev/null 2>&1; then
     sleep 2
 fi
 
-note "Pulling Ollama model qwen2.5:14b (skips if present)"
-if ! ollama list | awk '{print $1}' | grep -qx "qwen2.5:14b"; then
-    ollama pull qwen2.5:14b
+note "Pulling Ollama model gemma4:latest (skips if present)"
+if ! ollama list | awk '{print $1}' | grep -qx "gemma4:latest"; then
+    ollama pull gemma4:latest
 else
-    green "qwen2.5:14b already present"
+    green "gemma4:latest already present"
 fi
 
 note "Rendering and installing LaunchAgents into $LA_DIR"

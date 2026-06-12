@@ -6,7 +6,7 @@ Set up a local read-aloud pipeline on an M4 Max: fetch a URL, clean the text via
 
 - **Model**: `mlx-community/chatterbox-turbo-fp16` — faster than base Chatterbox, expressive event tags supported, default voice is fine (no reference audio).
 - **Python**: 3.12, managed via `uv`. Do not use 3.13 — spaCy's `blis` fails to compile.
-- **Cleanup LLM**: `qwen2.5:14b` via Ollama. Pull it if missing.
+- **Cleanup LLM**: `gemma4:latest` via Ollama. Pull it if missing.
 - **Server**: MLX-Audio's OpenAI-compatible server on `127.0.0.1:8000`.
 - **Project root**: `~/tts`.
 
@@ -41,7 +41,7 @@ If `HF_TOKEN` is unset, prompt the user before continuing.
 ## Step 4 — Verify Ollama + pull cleanup model
 
 ```bash
-ollama list | grep -q qwen2.5:14b || ollama pull qwen2.5:14b
+ollama list | grep -q gemma4:latest || ollama pull gemma4:latest
 curl -s http://localhost:11434/api/tags >/dev/null || echo "Ollama not running — start with: ollama serve"
 ```
 
@@ -91,7 +91,7 @@ from openai import OpenAI
 TTS_MODEL = "mlx-community/chatterbox-turbo-fp16"
 TTS_URL = "http://127.0.0.1:8000/v1"
 OLLAMA_URL = "http://localhost:11434/api/generate"
-OLLAMA_MODEL = "qwen2.5:14b"
+OLLAMA_MODEL = "gemma4:latest"
 OUTPUT = "/tmp/readaloud.wav"
 
 CLEAN_PROMPT = """You will be given the raw text of a web page. Rewrite it as a

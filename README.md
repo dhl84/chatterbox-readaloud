@@ -8,7 +8,7 @@ Everything runs locally. No cloud TTS, no telemetry. The only outbound calls are
 
 ## What it can read
 
-- **Any URL.** Fetches, strips chrome, runs the page through a cleanup LLM (Ollama / `qwen2.5:14b`), then synthesizes a 200–400 word spoken summary.
+- **Any URL.** Fetches, strips chrome, runs the page through a cleanup LLM (Ollama / `gemma4:latest`), then synthesizes a 200–400 word spoken summary.
 - **Whatever's on your clipboard.** Auto-routes: short text or terminal output (stack traces, shell sessions, diff hunks) gets spoken raw; long prose gets summarized first.
 
 ---
@@ -58,7 +58,7 @@ Ollama runs separately. If you have **Ollama.app** installed, it manages its own
 - **Apple Silicon** Mac (tested on M4 Max, macOS 26 / Tahoe). MLX needs native `arm64`.
 - **Native arm64 Homebrew** at `/opt/homebrew`. If you only have the Intel Homebrew at `/usr/local`, install the native one first — MLX falls back to CPU under Rosetta and gets very slow.
 - **uv** (`curl -LsSf https://astral.sh/uv/install.sh | sh`).
-- **Ollama** ([Ollama.app from ollama.com](https://ollama.com) or `brew install ollama`). Disk: ~9 GB for `qwen2.5:14b`.
+- **Ollama** ([Ollama.app from ollama.com](https://ollama.com) or `brew install ollama`). Disk: ~10 GB for `gemma4:latest`.
 - **ffmpeg** (`brew install ffmpeg`). Used by MLX-Audio.
 - **A Hugging Face read token** in `HF_TOKEN`. Create one at <https://huggingface.co/settings/tokens>.
 
@@ -79,7 +79,7 @@ What it does, in order:
 1. Verifies `brew`, `uv`, `ollama`, `ffmpeg`, `espeak-ng`, `HF_TOKEN`.
 2. Creates `.venv/` with Python 3.12 (3.13 is **not** supported — spaCy's `blis` fails to compile).
 3. `uv pip install -e .` — installs the `readaloud` package and all deps.
-4. `ollama pull qwen2.5:14b` if not already present.
+4. `ollama pull gemma4:latest` if not already present.
 5. Renders the plists in `launchagents/*.plist.tmpl` with this checkout's path and your `HF_TOKEN`, writes them to `~/Library/LaunchAgents/`, and `launchctl load -w`s each one. Skips the ollama plist if Ollama.app is already serving 11434.
 6. Curls the MLX server to confirm it came up.
 
@@ -219,7 +219,7 @@ curl -s http://127.0.0.1:11434/      # Ollama health
 - Missing system deps (`uvicorn`, `fastapi`, `webrtcvad`) — re-run `uv pip install -e .`.
 - `pkg_resources` import error — `setuptools` got upgraded past 81. The pin in `pyproject.toml` should prevent this; re-run install if it slipped.
 
-**Ollama responds but `qwen2.5:14b` not found.** `ollama pull qwen2.5:14b`. Check disk: the model is ~9 GB.
+**Ollama responds but `gemma4:latest` not found.** `ollama pull gemma4:latest`. Check disk: the model is ~10 GB.
 
 **The menu bar icon doesn't appear.** Tail `/tmp/readaloud-menubar.log`. If the Python process keeps respawning, the rumps app may have crashed on a state-file format error. State file format is plain text containing one of `idle`, `preparing`, `playing` — nothing else.
 
